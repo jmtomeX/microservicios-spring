@@ -4,9 +4,8 @@ import java.util.Optional;
 
 import com.formacion.microservicios.app.usuarios.models.entity.Alumno;
 
-
 public interface AlumnoService {
-//listar alumnos
+	//listar alumnos
 	public Iterable<Alumno> findAll();
 
 	// listar por id
