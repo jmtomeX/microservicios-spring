@@ -23,8 +23,8 @@ public class AlumnoController {
 	@Autowired
 	private AlumnoService service;
 
-	// permite mapear una ruta url al método, la petición es del tipo get. Al no
-	// poner ninguna ruta coge la ráiz
+	/* permite mapear una ruta url al método, la petición es del tipo get. Al no
+	 poner ninguna ruta coge la ráiz */
 	@GetMapping
 	// se la pasan objetos al body del response, y el status
 	public ResponseEntity<?> listar() {
