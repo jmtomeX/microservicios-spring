@@ -1,4 +1,4 @@
-package com.formacion.microservicios.app.usuarios;
+package com.formacion.microservicios.app.cursos;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,10 +8,10 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @SpringBootApplication
 // para que encuentre la clase y añadirla en el pom como dependencia
 @EntityScan({"com.formacion.microservicios.commons.alumnos.models.entity"})
-public class MicroservicioUsuariosApplication {
+public class MicroservicioCursosApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MicroservicioUsuariosApplication.class, args);
+		SpringApplication.run(MicroservicioCursosApplication.class, args);
 	}
 
 }

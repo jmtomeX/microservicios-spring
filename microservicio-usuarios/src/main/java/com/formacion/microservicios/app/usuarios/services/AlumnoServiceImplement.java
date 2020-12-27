@@ -1,8 +1,9 @@
 package com.formacion.microservicios.app.usuarios.services;
 
 import org.springframework.stereotype.Service;
-import com.formacion.microservicios.app.usuarios.models.entity.Alumno;
+
 import com.formacion.microservicios.app.usuarios.models.repository.AlumnoRepository;
+import com.formacion.microservicios.commons.alumnos.models.entity.Alumno;
 import com.formacion.microservicios.commons.services.CommonServiceImplement;
 
 @Service
