@@ -75,6 +75,23 @@ public class Alumno {
 	public void setCreateAt(Date createAt) {
 		this.createAt = createAt;
 	}
+
+	@Override
+	// Eliminar un objeto de la relación con la entidad curso, método para compobrar que sea el mismo alumno, buscando en la  lista de la clase curso.
+	public boolean equals(Object obj) {
+		if(this == obj) {
+			return true;
+		}
+		// comprobar que sean una instancia del mismo tipo Alumno
+		if(!(obj instanceof Alumno)) {
+			return false;
+		}
+		//comparar los ids casteando a Alumno
+		Alumno a = (Alumno) obj;
+		return this.id != null && this.id.equals(a.getId());
+	}
+	
+	
 	
 	
 	
