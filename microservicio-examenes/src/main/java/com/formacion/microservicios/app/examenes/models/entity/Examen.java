@@ -102,7 +102,7 @@ public class Examen {
 	
 	public void removePregunta(Pregunta pregunta) {
 		this.preguntas.remove(pregunta);
-		// quitar la referencia al examen dejándola huérfana
+		// quitar la referencia al examen dejándola huérfana por lo que orphanRemoval la eliminará
 		pregunta.setExamen(null);
 	}
 
