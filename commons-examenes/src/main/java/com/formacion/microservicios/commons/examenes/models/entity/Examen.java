@@ -118,4 +118,21 @@ public class Examen {
 		pregunta.setExamen(null);
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if(this == obj) {
+			return true;
+		}
+		// comprobar que sean una instancia del mismo tipo examen
+		if(!(obj instanceof Examen)) {
+			return false;
+		}
+		//comparar los ids casteando a examen
+		Examen a = (Examen) obj;
+		return this.id != null && this.id.equals(a.getId());
+		
+	}
+	
+	
+
 }

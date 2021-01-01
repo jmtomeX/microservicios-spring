@@ -15,6 +15,7 @@ import com.formacion.microservicios.app.cursos.models.entity.Curso;
 import com.formacion.microservicios.app.cursos.services.CursoService;
 import com.formacion.microservicios.commons.alumnos.models.entity.Alumno;
 import com.formacion.microservicios.commons.controllers.CommonController;
+import com.formacion.microservicios.commons.examenes.models.entity.Examen;
 
 @RestController
 public class CursoController extends CommonController<Curso, CursoService> {
@@ -68,6 +69,36 @@ public class CursoController extends CommonController<Curso, CursoService> {
 		Curso curso = service.findCursoByAlumnoId(id);
 		System.out.print(curso);
 		return ResponseEntity.ok(curso);
+	}
+	
+	// método para asignar examenes al curso
+	@PutMapping("/{id}/asignar-examenes")
+	public ResponseEntity<?> asignarExamenes(@RequestBody List<Examen> examenes, @PathVariable Long id){
+		Optional<Curso> o = this.service.findById(id);
+		if (!o.isPresent()) { 
+			return ResponseEntity.notFound().build();
+		}
+		
+		Curso dbCurso = o.get();
+		
+		examenes.forEach(e -> {
+			dbCurso.addExamen(e);
+		});
+		return ResponseEntity.status(HttpStatus.CREATED).body(this.service.save(dbCurso));
+	}
+	
+	// método para eliminar examenes del curso de 1 en 1
+	@PutMapping("/{id}/eliminar-examen")
+	public ResponseEntity<?> eliminarExamen(@RequestBody Examen examen, @PathVariable Long id){
+		Optional<Curso> o = this.service.findById(id);
+		if (!o.isPresent()) { 
+			return ResponseEntity.notFound().build();
+		}
+		
+		Curso dbExamen = o.get();
+		
+		dbExamen.removeExamen(examen);
+		return ResponseEntity.status(HttpStatus.CREATED).body(this.service.save(dbExamen));
 	}
 	
 	
