@@ -1,4 +1,4 @@
-package com.formacion.microservicios.app.examenes.models.entity;
+package com.formacion.microservicios.commons.examenes.models.entity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +17,14 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+// agregar la dependencia en pom.xml, se agrega de forma automática cuando se crea el proyecto
+// con spring-starter-web en este caso al no incluirlo hay que insertarlo manualmente
+/*
+<dependency>
+<groupId>org.springframework.boot</groupId>
+<artifactId>spring-boot-starter-json</artifactId>
+</dependency>
+*/
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -33,14 +41,15 @@ public class Examen {
 	@Column(name = "create_at")
 	private Date createAt;
 
-	// para evitar la relación inversa y evitar un bucle infinito en la petición(suprimir atributo examen)
+	// para evitar la relación inversa y evitar un bucle infinito en la
+	// petición(suprimir atributo examen)
 	// permitir setters para poder asignar la relación inversa
-	@JsonIgnoreProperties(value= {"examen"},allowSetters = true)
-	// establecer la relación con examenes bidireccional, en cascascada, borra las preguntas huerfanas
+	@JsonIgnoreProperties(value = { "examen" }, allowSetters = true)
+	// establecer la relación con examenes bidireccional, en cascascada, borra las
+	// preguntas huerfanas
 	@OneToMany(mappedBy = "examen", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Pregunta> preguntas;
-	
-	
+
 	// constructor
 	public Examen() {
 		this.preguntas = new ArrayList<>();
@@ -81,7 +90,8 @@ public class Examen {
 	}
 
 	public void setPreguntas(List<Pregunta> preguntas) {
-		// resetear preguntas con el clear para que tenga la referencia de los objetos que se eliminaron
+		// resetear preguntas con el clear para que tenga la referencia de los objetos
+		// que se eliminaron
 		this.preguntas.clear();
 		// cada pregunta asignar el examen
 		preguntas.forEach(p -> {
@@ -89,7 +99,8 @@ public class Examen {
 		});
 		// lambda reducido
 		// 1º preguntas.forEach(p -> this.addPregunta(p));
-		// de esta forma se asume que lo que se recibe en this se pasa como argumento a addPregunta
+		// de esta forma se asume que lo que se recibe en this se pasa como argumento a
+		// addPregunta
 		// 2º preguntas.forEach(this::addPregunta)
 	}
 
@@ -99,12 +110,12 @@ public class Examen {
 		// asignar el examen a la pregunta
 		pregunta.setExamen(this);
 	}
-	
+
 	public void removePregunta(Pregunta pregunta) {
 		this.preguntas.remove(pregunta);
-		// quitar la referencia al examen dejándola huérfana por lo que orphanRemoval la eliminará
+		// quitar la referencia al examen dejándola huérfana por lo que orphanRemoval la
+		// eliminará
 		pregunta.setExamen(null);
 	}
 
-	
 }
