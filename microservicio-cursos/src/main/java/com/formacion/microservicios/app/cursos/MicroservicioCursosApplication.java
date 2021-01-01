@@ -9,6 +9,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @SpringBootApplication
 // para que encuentre la clase y añadirla en el pom como dependencia, se le añade la propia de cursos porque se sobreescribe
 @EntityScan({ "com.formacion.microservicios.commons.alumnos.models.entity",
+		"com.formacion.microservicios.commons.examenes.models.entity",
 		"com.formacion.microservicios.app.cursos.models.entity" })
 public class MicroservicioCursosApplication {
 
