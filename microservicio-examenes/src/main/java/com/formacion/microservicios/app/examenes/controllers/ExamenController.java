@@ -66,10 +66,15 @@ public class ExamenController extends CommonController<Examen, ExamenService> {
 		// examenDb es el que contiene todos los cambios
 		return ResponseEntity.status(HttpStatus.CREATED).body(service.save(examenDb));
 	}
-	
+
 	@GetMapping("/filtrar/{term}")
-	public ResponseEntity<?> filtrar(@PathVariable String term){
+	public ResponseEntity<?> filtrar(@PathVariable String term) {
 		return ResponseEntity.ok(service.findByNombre(term));
-		
 	}
+
+	@GetMapping("/asignaturas")
+	public ResponseEntity<?> listarAsignaturas() {
+		return ResponseEntity.ok(service.findAllAsignaturas());
+	}
+
 }
