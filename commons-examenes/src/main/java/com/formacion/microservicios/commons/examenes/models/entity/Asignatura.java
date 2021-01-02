@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table
+@Table(name = "asignaturas")
 public class Asignatura {
 
 	@Id
@@ -30,7 +30,7 @@ public class Asignatura {
 
 	@JsonIgnoreProperties(value = { "hijos" })
 	@ManyToOne(fetch = FetchType.LAZY)
-	private String padre;
+	private Asignatura padre;
 
 	@JsonIgnoreProperties(value = { "padre" }, allowSetters = true)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "padre", cascade = CascadeType.ALL)
@@ -40,11 +40,10 @@ public class Asignatura {
 	public Asignatura() {
 		this.hijos = new ArrayList<>();
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
-
 
 	public void setId(Long id) {
 		this.id = id;
@@ -58,11 +57,11 @@ public class Asignatura {
 		this.nombre = nombre;
 	}
 
-	public String getPadre() {
+	public Asignatura getPadre() {
 		return padre;
 	}
 
-	public void setPadre(String padre) {
+	public void setPadre(Asignatura padre) {
 		this.padre = padre;
 	}
 
@@ -73,6 +72,5 @@ public class Asignatura {
 	public void setHijos(List<Asignatura> hijos) {
 		this.hijos = hijos;
 	}
-	
 
 }

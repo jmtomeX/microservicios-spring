@@ -1,7 +1,5 @@
 package com.formacion.microservicios.app.examenes.controllers;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
@@ -60,7 +58,7 @@ public class ExamenController extends CommonController<Examen, ExamenService> {
 
 		examenDb.setPreguntas(examen.getPreguntas());
 
-		// agregar las preguntas, modificar las existentes o las que no se tocan se
+		// agregar las preguntas, modificar las existentes o las que no se modifican se
 		// dejan como están
 		examenDb.setPreguntas(examen.getPreguntas());
 		// examenDb es el que contiene todos los cambios
