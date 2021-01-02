@@ -2,8 +2,11 @@ package com.formacion.microservicios.app.examenes.controllers;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,7 +22,12 @@ public class ExamenController extends CommonController<Examen, ExamenService> {
 
 	// modificar, añadir preguntas al examen
 	@PutMapping("/{id}")
-	public ResponseEntity<?> editar(@RequestBody Examen examen, @PathVariable Long id) {
+	// Validación. Através del result se obtienen los mensajes de error de la validación, debe de ir después de examen
+	public ResponseEntity<?> editar(@Valid @RequestBody Examen examen, BindingResult result, @PathVariable Long id) {
+		// validar antes de modificar
+		if (result.hasErrors()) {
+			return this.validar(result);
+		}
 		// obtener examen por id
 		Optional<Examen> o = service.findById(id);
 		if (!o.isPresent()) {

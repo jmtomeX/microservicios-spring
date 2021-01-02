@@ -17,6 +17,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 // agregar la dependencia en pom.xml, se agrega de forma automática cuando se crea el proyecto
 // con spring-starter-web en este caso al no incluirlo hay que insertarlo manualmente
@@ -36,6 +38,7 @@ public class Examen {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotEmpty // valida Strings
 	private String nombre;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -53,6 +56,7 @@ public class Examen {
 
 	// relación con asignaturas
 	@ManyToOne(fetch = FetchType.LAZY)
+	@NotNull // valida objetos para validar
 	private Asignatura asignatura;
 	
 	

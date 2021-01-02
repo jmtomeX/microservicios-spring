@@ -1,10 +1,15 @@
 package com.formacion.microservicios.commons.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,7 +48,12 @@ public class CommonController<E, S extends CommonService<E>> {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> crear(@RequestBody E entity) {
+	// Validación. Através del result se obtienen los mensajes de error de la validación, el orden influye
+	public ResponseEntity<?> crear(@Valid @RequestBody E entity, BindingResult result) {
+		// validar antes de crear
+		if (result.hasErrors()) {
+			return this.validar(result);
+		}
 		E entityDb = service.save(entity);
 		// se le pasa al cuerpo de la respuesta
 		return ResponseEntity.status(HttpStatus.CREATED).body(entityDb);
@@ -54,6 +64,19 @@ public class CommonController<E, S extends CommonService<E>> {
 		service.deleteById(id);
 		//retorna void, no pasa nada al cuerpo, noContent es de tipo 204
 		return ResponseEntity.noContent().build();
+	}
+	
+	// validación de campos
+	protected ResponseEntity<?> validar (BindingResult result){
+		// generar un json con el error
+
+		Map<String, Object> errores = new HashMap<>();
+		// obtebenos los mensajes de error y lo guardamos en el mapa
+		result.getFieldErrors().forEach(err -> {   // Atributo 				Mensaje de error
+		 errores.put(err.getField(), "El campo " +  err.getField() + " " + err.getDefaultMessage());
+		});
+		return ResponseEntity.badRequest().body(errores);
+		
 	}
 	
 }

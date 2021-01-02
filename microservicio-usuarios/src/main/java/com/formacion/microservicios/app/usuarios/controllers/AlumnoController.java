@@ -2,8 +2,11 @@ package com.formacion.microservicios.app.usuarios.controllers;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,7 +22,12 @@ public class AlumnoController extends CommonController<Alumno, AlumnoService> {
 
 	@PutMapping("/{id}")
 	// alumno que se quiere guardar con RequestBody, capturar el id con el PathVariable
-	public ResponseEntity<?> editar(@RequestBody Alumno alumno, @PathVariable Long id) {
+	// Validación. Através del result se obtienen los mensajes de error de la validación, el orden influye tiene que ir después de alumno
+	public ResponseEntity<?> editar(@Valid @RequestBody Alumno alumno,  BindingResult result, @PathVariable Long id) {
+		// validar antes de crear
+		if (result.hasErrors()) {
+			return this.validar(result);
+		}
 		// buscar el alumno que exista en la bbdd
 		Optional<Alumno> o = service.findById(id);
 		if (o.isEmpty()) {
