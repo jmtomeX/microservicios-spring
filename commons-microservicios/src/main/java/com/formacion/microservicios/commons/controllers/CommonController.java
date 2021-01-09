@@ -7,6 +7,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -32,6 +33,14 @@ public class CommonController<E, S extends CommonService<E>> {
 	public ResponseEntity<?> listar() {
 		// pasamos al cuerpo de la respuesta una lista de Entity
 		return ResponseEntity.ok(service.findAll());
+	}
+	
+	// ruta para paginar
+	@GetMapping("/pagina")
+	// se la pasan objetos al body del response, y el status
+	public ResponseEntity<?> listar(Pageable pageable) {
+		// pasamos al cuerpo de la respuesta una lista de Entity
+		return ResponseEntity.ok(service.findAll(pageable));
 	}
 
 	// Buscar ruta por ID

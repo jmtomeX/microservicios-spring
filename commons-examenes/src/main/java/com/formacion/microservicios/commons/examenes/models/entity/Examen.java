@@ -19,6 +19,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 // agregar la dependencia en pom.xml, se agrega de forma automática cuando se crea el proyecto
 // con spring-starter-web en este caso al no incluirlo hay que insertarlo manualmente
@@ -39,6 +40,7 @@ public class Examen {
 	private Long id;
 
 	@NotEmpty // valida Strings
+	@Size(min = 4,max = 30) // validar tamaño de la cadena
 	private String nombre;
 
 	@Temporal(TemporalType.TIMESTAMP)
