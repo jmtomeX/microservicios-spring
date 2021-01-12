@@ -48,7 +48,7 @@ public class Alumno {
 	@JsonIgnore // ignorar el atributo en el json hay que importar Json en el pom.xml
 	private byte[] foto;
 
-	// asignar fecha antes de hacer un insert asigne la fecha
+	// asignar fecha antes de hacer un insert 
 	@PrePersist
 	public void prePersist() {
 		this.createAt = new Date();
