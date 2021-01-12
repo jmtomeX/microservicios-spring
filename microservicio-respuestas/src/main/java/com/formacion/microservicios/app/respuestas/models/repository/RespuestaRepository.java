@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.formacion.microservicios.app.respuestas.models.entity.Respuesta;
 
-public interface RespuestRepository extends CrudRepository<Respuesta, Long> {
+public interface RespuestaRepository extends CrudRepository<Respuesta, Long> {
 
 }
