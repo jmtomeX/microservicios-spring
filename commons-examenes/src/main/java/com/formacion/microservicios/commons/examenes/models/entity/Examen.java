@@ -17,6 +17,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -60,6 +61,10 @@ public class Examen {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@NotNull // valida objetos para validar
 	private Asignatura asignatura;
+	
+	// no mapeado en la bbdd porque se le asignaría a todos los alumnos
+	@Transient
+	private boolean respondido;
 	
 	
 	// constructor
@@ -108,6 +113,14 @@ public class Examen {
 
 	public void setAsignatura(Asignatura asignatura) {
 		this.asignatura = asignatura;
+	}
+
+	public boolean isRespondido() {
+		return respondido;
+	}
+
+	public void setRespondido(boolean respondido) {
+		this.respondido = respondido;
 	}
 
 	public void setPreguntas(List<Pregunta> preguntas) {
