@@ -17,5 +17,10 @@ public class RespuestaServiceImplement implements RespuestaService {
 	public Iterable<Respuesta> saveAll(Iterable<Respuesta> respuestas) {
 		return repository.saveAll(respuestas);
 	}
+	@Override
+	@Transactional(readOnly = true) // solo de lectura
+	public Iterable<Respuesta> findRespuestaByAlumnoByExamen(Long alumnoId, Long examenId) {
+		return this.repository.findRespuestaByAlumnoByExamen(alumnoId, examenId);
+	}
 
 }
