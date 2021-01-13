@@ -22,5 +22,10 @@ public class RespuestaServiceImplement implements RespuestaService {
 	public Iterable<Respuesta> findRespuestaByAlumnoByExamen(Long alumnoId, Long examenId) {
 		return this.repository.findRespuestaByAlumnoByExamen(alumnoId, examenId);
 	}
+	@Override
+	@Transactional(readOnly = true) // solo de lectura
+	public Iterable<Long> findExamenesIdsConRespuestasByAlumno(Long alumnoId) {
+		return repository.findExamenesIdsConRespuestasByAlumno(alumnoId);
+	}
 
 }
