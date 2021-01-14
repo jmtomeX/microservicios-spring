@@ -26,7 +26,7 @@ public class RespuestaController {
 		// examen
 		return ResponseEntity.status(HttpStatus.CREATED).body(respuestasDb);
 	}
-
+	// que preguntas fueron respondidas por el alumno
 	@GetMapping("/alumno/{alumnoId}/examen/{examenId}")
 	// se guarda en el responseEntity
 	public ResponseEntity<?> obtenerRepuestasPorAlumnoPorExamen(@PathVariable Long alumnoId,
