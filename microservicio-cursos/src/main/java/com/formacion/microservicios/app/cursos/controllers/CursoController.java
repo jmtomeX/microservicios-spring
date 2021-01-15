@@ -2,6 +2,7 @@ package com.formacion.microservicios.app.cursos.controllers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -73,7 +74,26 @@ public class CursoController extends CommonController<Curso, CursoService> {
 	@GetMapping("/alumno/{id}")
 	public ResponseEntity<?> buscarPorAlumnoId(@PathVariable Long id) {
 		Curso curso = service.findCursoByAlumnoId(id);
-		System.out.print(curso);
+
+		if (curso != null) {
+			// obtener examenes respondidos del alumno, List tiene métodos como containts()
+			// para preguntarle si existe
+			// retorna un Iterable por lo que se le castea a List
+			List<Long> examenesIds = (List<Long>) service.obtenerExamenesIdsConRespuestasAlumno(id);
+
+			// nueva lista de examenes respondidos con map
+			List<Examen> examenes = curso.getExamenes().stream().map(examen -> {
+				if (examenesIds.contains(examen.getId())) {
+					// si está contenido lo pasamos a true
+					examen.setRespondido(true);
+				}
+				// retorna un string
+				return examen;
+				// se le pasa a a tipo List
+			}).collect(Collectors.toList());
+			// le enviamos la nueva lista, los examenes respondidos
+			curso.setExamenes(examenes);
+		}
 		return ResponseEntity.ok(curso);
 	}
 
