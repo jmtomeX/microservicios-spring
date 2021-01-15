@@ -1,7 +1,5 @@
 package com.formacion.microservicios.app.cursos.services;
 
-import org.springframework.web.bind.annotation.PathVariable;
-
 import com.formacion.microservicios.app.cursos.models.entity.Curso;
 import com.formacion.microservicios.commons.services.CommonService;
 
