@@ -1,11 +1,14 @@
 package com.formacion.microservicios.app.cursos.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -23,6 +26,19 @@ import com.formacion.microservicios.commons.examenes.models.entity.Examen;
 
 @RestController
 public class CursoController extends CommonController<Curso, CursoService> {
+
+	// inyectamos la variable de sistema del balanceador de carga de gateway
+	@Value("${config.balanceador.test}")
+	private String balanceadorTest;
+	
+	@GetMapping("/balanceador-test")
+	public ResponseEntity<?> balanceadorTest() {
+		// valor para testear el balanceador de carga spring cloud load balancer
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("balanceador", balanceadorTest);
+		response.put("cursos", service.findAll());
+		return ResponseEntity.ok(response);
+	}
 
 	@PutMapping("/{id")
 	public ResponseEntity<?> editar(@Valid @RequestBody Curso curso, BindingResult result, @PathVariable Long id) {
