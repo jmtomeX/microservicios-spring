@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formacion.microservicios.app.cursos.models.entity.Curso;
+import com.formacion.microservicios.app.cursos.models.entity.CursoAlumno;
 import com.formacion.microservicios.app.cursos.services.CursoService;
 import com.formacion.microservicios.commons.alumnos.models.entity.Alumno;
 import com.formacion.microservicios.commons.controllers.CommonController;
@@ -67,7 +68,12 @@ public class CursoController extends CommonController<Curso, CursoService> {
 		Curso dbCurso = o.get();
 
 		alumnos.forEach(a -> {
-			dbCurso.addAlumno(a);
+			CursoAlumno cursoAlumno = new CursoAlumno();
+			// Asignar un alumno
+			cursoAlumno.setAlumnoId(a.getId());
+			cursoAlumno.setCurso(dbCurso);
+			dbCurso.addCursoAlumno(cursoAlumno);
+			// dbCurso.addAlumno(a); relación con mysql que ya no está
 		});
 		return ResponseEntity.status(HttpStatus.CREATED).body(this.service.save(dbCurso));
 	}
@@ -81,8 +87,10 @@ public class CursoController extends CommonController<Curso, CursoService> {
 		}
 
 		Curso dbCurso = o.get();
-
-		dbCurso.removeAlumno(alumno);
+		CursoAlumno cursoAlumno = new CursoAlumno();
+		cursoAlumno.setAlumnoId(alumno.getId());
+		dbCurso.removeCursoAlumno(cursoAlumno);
+		// dbCurso.removeAlumno(alumno); relación con mysql que ya no está
 		return ResponseEntity.status(HttpStatus.CREATED).body(this.service.save(dbCurso));
 	}
 

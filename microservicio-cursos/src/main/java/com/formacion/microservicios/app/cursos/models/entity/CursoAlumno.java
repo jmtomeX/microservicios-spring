@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 // clase intermedia entre curso y alumno
 
 @Entity
-@Table
+@Table(name = "curso_alumnos")
 public class CursoAlumno {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
