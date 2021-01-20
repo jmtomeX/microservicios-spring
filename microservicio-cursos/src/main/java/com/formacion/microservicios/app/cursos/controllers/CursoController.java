@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -47,6 +49,24 @@ public class CursoController extends CommonController<Curso, CursoService> {
 			return c;
 			// convertir a un tipo list porque es un string
 		}).collect(Collectors.toList());
+		// pasamos al cuerpo de la respuesta una lista de Entity
+		return ResponseEntity.ok().body(cursos);
+	}
+	
+	// ruta para paginar
+	@GetMapping("/pagina")
+	@Override
+	public ResponseEntity<?> listar(Pageable pageable) {
+		Page<Curso> cursos = service.findAll(pageable).map(curso -> {
+			curso.getCursoAlumnos().forEach(ca -> {
+			// por cada uno se crea un objeto alumno, llenamos la colección de alumnos del
+			Alumno alumno = new Alumno();
+			alumno.setId(ca.getAlumnoId());
+			// lo guardamos a la lista de alumnos del curso
+			curso.addAlumno(alumno);
+		});
+		return curso;
+		});
 		// pasamos al cuerpo de la respuesta una lista de Entity
 		return ResponseEntity.ok().body(cursos);
 	}
