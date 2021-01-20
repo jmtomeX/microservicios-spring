@@ -38,7 +38,8 @@ public class CursoController extends CommonController<Curso, CursoService> {
 	public ResponseEntity<?> listar() {
 		List<Curso> cursos = ((List<Curso>) service.findAll()).stream().map(c -> {
 			c.getCursoAlumnos().forEach(ca -> {
-				// por cada uno se crea un objeto alumno, llenamos la colección de alumnos del curso
+				// por cada uno se crea un objeto alumno, llenamos la colección de alumnos del
+				// curso
 				Alumno alumno = new Alumno();
 				alumno.setId(ca.getAlumnoId());
 				c.addAlumno(alumno);
@@ -48,6 +49,33 @@ public class CursoController extends CommonController<Curso, CursoService> {
 		}).collect(Collectors.toList());
 		// pasamos al cuerpo de la respuesta una lista de Entity
 		return ResponseEntity.ok().body(cursos);
+	}
+
+	// Buscar ruta por ID
+	@GetMapping("/{id}")
+	@Override
+	// en el caso de que se llamase distinto se índica: (@PathVariable() Long id)
+	public ResponseEntity<?> ver(@PathVariable() Long id) {
+		// buscar el alumno que exista
+		Optional<Curso> o = service.findById(id);
+		if (o.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		Curso curso = o.get();
+		// si curso tiene alumnos asignados
+		if (curso.getCursoAlumnos().isEmpty() == false) {
+			// coleccionar los ids de los alumnos
+			List<Long> ids = curso.getCursoAlumnos().stream().map(ca ->
+			// cambiamos el curso de lo que retorna map
+			ca.getAlumnoId()).collect(Collectors.toList()); // lo pasamos a List ya que devuelve un String
+
+			// Obetenemos los alumnos completos
+			List<Alumno> alumnos = (List<Alumno>) service.obtenerAlumnosPorCurso(ids);
+			curso.setAlumnos(alumnos);
+		}
+
+		// si existe lo devolvemos,el ok es de tipo 200
+		return ResponseEntity.ok().body(curso);
 	}
 
 	@GetMapping("/balanceador-test")
