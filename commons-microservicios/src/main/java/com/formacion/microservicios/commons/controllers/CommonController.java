@@ -40,7 +40,7 @@ public class CommonController<E, S extends CommonService<E>> {
 	// se la pasan objetos al body del response, y el status
 	public ResponseEntity<?> listar(Pageable pageable) {
 		// pasamos al cuerpo de la respuesta una lista de Entity
-		return ResponseEntity.ok(service.findAll(pageable));
+		return ResponseEntity.ok().body(service.findAll(pageable));
 	}
 
 	// Buscar ruta por ID
