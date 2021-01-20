@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -31,7 +32,25 @@ public class CursoController extends CommonController<Curso, CursoService> {
 	// inyectamos la variable de sistema del balanceador de carga de gateway
 	@Value("${config.balanceador.test}")
 	private String balanceadorTest;
-	
+
+	// Modificar el listado
+	@GetMapping
+	@Override
+	public ResponseEntity<?> listar() {
+		List<Curso> cursos = ((List<Curso>) service.findAll()).stream().map(c -> {
+			c.getCursoAlumnos().forEach(ca -> {
+				// por cada uno se crea un objeto alumno, llenamos la colección de alumnos del curso
+				Alumno alumno = new Alumno();
+				alumno.setId(ca.getAlumnoId());
+				c.addAlumno(alumno);
+			});
+			return c;
+			// convertir a un tipo list porque es un string
+		}).collect(Collectors.toList());
+		// pasamos al cuerpo de la respuesta una lista de Entity
+		return ResponseEntity.ok().body(cursos);
+	}
+
 	@GetMapping("/balanceador-test")
 	public ResponseEntity<?> balanceadorTest() {
 		// valor para testear el balanceador de carga spring cloud load balancer
