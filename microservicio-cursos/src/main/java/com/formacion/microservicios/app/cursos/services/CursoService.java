@@ -2,7 +2,6 @@ package com.formacion.microservicios.app.cursos.services;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.formacion.microservicios.app.cursos.models.entity.Curso;
 import com.formacion.microservicios.commons.alumnos.models.entity.Alumno;
@@ -16,7 +15,7 @@ public interface CursoService extends CommonService<Curso> {
 	public Iterable<Long> obtenerExamenesIdsConRespuestasAlumno( Long alumnoId);
 	
 	// petición al microservicio Alumnos
-	public Iterable<Alumno> obtenerAlumnosPorCurso(@RequestParam List<Long> ids);
+	public Iterable<Alumno> obtenerAlumnosPorCurso(List<Long> ids);
 	
 	
 }
