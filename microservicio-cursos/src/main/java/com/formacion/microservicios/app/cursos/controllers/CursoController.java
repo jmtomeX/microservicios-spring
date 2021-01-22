@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,6 +36,15 @@ public class CursoController extends CommonController<Curso, CursoService> {
 	@Value("${config.balanceador.test}")
 	private String balanceadorTest;
 
+	// eliminar alumno del curso
+	@DeleteMapping("/eliminar-alumno/{id}")
+	public ResponseEntity<?> eliminarAlumnoCursoPorId(@PathVariable Long id) {
+		service.eliminarCursoAlumnoPorId(id);
+		// como es un delete devuelve un body sin contenido 
+		return ResponseEntity.noContent().build();
+		
+		
+	}
 	// Modificar el listado
 	@GetMapping
 	@Override

@@ -17,5 +17,7 @@ public interface CursoService extends CommonService<Curso> {
 	// petición al microservicio Alumnos
 	public Iterable<Alumno> obtenerAlumnosPorCurso(List<Long> ids);
 	
+	public void eliminarCursoAlumnoPorId(Long id);
+	
 	
 }
