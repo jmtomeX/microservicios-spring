@@ -2,8 +2,6 @@ package com.formacion.microservicios.app.usuarios.services;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.PathVariable;
-
 import com.formacion.microservicios.commons.alumnos.models.entity.Alumno;
 import com.formacion.microservicios.commons.services.CommonService;
 

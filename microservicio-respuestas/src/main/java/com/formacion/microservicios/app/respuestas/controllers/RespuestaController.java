@@ -1,5 +1,8 @@
 package com.formacion.microservicios.app.respuestas.controllers;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +23,17 @@ public class RespuestaController {
 
 	@PostMapping
 	public ResponseEntity<?> crear(@RequestBody Iterable<Respuesta> respuestas) {
-		//
+		respuestas = ((List<Respuesta>)respuestas).stream().map(r ->  {
+			// respuesta en el RequestBody como Json
+			r.setAlumnoId(r.getAlumno().getId());
+			return r;
+		}).collect(Collectors.toList());
 		Iterable<Respuesta> respuestasDb = service.saveAll(respuestas);
 		// se guardan un conjunto de respuestas asociadas a las preguntas y asociadas al
 		// examen
 		return ResponseEntity.status(HttpStatus.CREATED).body(respuestasDb);
 	}
+
 	// que preguntas fueron respondidas por el alumno
 	@GetMapping("/alumno/{alumnoId}/examen/{examenId}")
 	// se guarda en el responseEntity
@@ -34,11 +42,11 @@ public class RespuestaController {
 		Iterable<Respuesta> respuestas = service.findRespuestaByAlumnoByExamen(alumnoId, examenId);
 		return ResponseEntity.ok(respuestas);
 	}
-	
+
 	@GetMapping("/alumno/{alumnoId}/examenes-respondidos")
-	public ResponseEntity<?> obtenerExamenesIdsConRespuestasAlumno(@PathVariable Long alumnoId){
+	public ResponseEntity<?> obtenerExamenesIdsConRespuestasAlumno(@PathVariable Long alumnoId) {
 		Iterable<Long> examenesIds = service.findExamenesIdsConRespuestasByAlumno(alumnoId);
 		return ResponseEntity.ok(examenesIds);
-		
+
 	}
 }
