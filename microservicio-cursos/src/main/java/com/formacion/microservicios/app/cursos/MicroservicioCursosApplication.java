@@ -12,7 +12,8 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @SpringBootApplication
 // para que encuentre la clase y añadirla en el pom como dependencia, se le añade la propia de cursos porque se sobreescribe
 @EntityScan({ "com.formacion.microservicios.commons.alumnos.models.entity",
-		"com.formacion.microservicios.commons.examenes.models.entity",
+	// ALUMNOS ES TRANSIENT NO ES NECESARIO	YA QUE SOLO ES UN ATRIBUTO YA NO ES UNA TABLA
+	// "com.formacion.microservicios.commons.examenes.models.entity",
 		"com.formacion.microservicios.app.cursos.models.entity" })
 public class MicroservicioCursosApplication {
 
