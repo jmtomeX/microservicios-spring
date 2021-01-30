@@ -15,6 +15,10 @@ public interface RespuestaRepository extends MongoRepository<Respuesta, String> 
 	// que se encuentren dentro del conjunto
 	@Query("{'alumnoId': ?0,'preguntaId': {'$in':?1}}")
 	public Iterable<Respuesta> findRespuestaByAlumnoByPreguntaIds(Long alumnoId, Iterable<Long> preguntaIds);
+	
+	// Obtener todas las respuestas del alumno
+	@Query("{'alumnoId': ?0}")
+	public Iterable<Respuesta> findByAlumnoId(Long alumnoId); // luego se convierte en un iterable Long que solo tiene los ids
 
 	// Mysql jpa
 	// el join no es a campos de la tabla como en sql sino a atributos
