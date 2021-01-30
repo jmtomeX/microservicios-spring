@@ -25,7 +25,9 @@ public class RespuestaController {
 	public ResponseEntity<?> crear(@RequestBody Iterable<Respuesta> respuestas) {
 		respuestas = ((List<Respuesta>)respuestas).stream().map(r ->  {
 			// respuesta en el RequestBody como Json
+			// relaciones con otras entitys
 			r.setAlumnoId(r.getAlumno().getId());
+			r.setPreguntaId(r.getPregunta().getId()); 
 			return r;
 		}).collect(Collectors.toList());
 		Iterable<Respuesta> respuestasDb = service.saveAll(respuestas);

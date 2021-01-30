@@ -39,11 +39,11 @@ public class CursoController extends CommonController<Curso, CursoService> {
 	@DeleteMapping("/eliminar-alumno/{id}")
 	public ResponseEntity<?> eliminarAlumnoCursoPorId(@PathVariable Long id) {
 		service.eliminarCursoAlumnoPorId(id);
-		// como es un delete devuelve un body sin contenido 
+		// como es un delete devuelve un body sin contenido
 		return ResponseEntity.noContent().build();
-		
-		
+
 	}
+
 	// Modificar el listado
 	@GetMapping
 	@Override
@@ -62,20 +62,20 @@ public class CursoController extends CommonController<Curso, CursoService> {
 		// pasamos al cuerpo de la respuesta una lista de Entity
 		return ResponseEntity.ok().body(cursos);
 	}
-	
+
 	// ruta para paginar
 	@GetMapping("/pagina")
 	@Override
 	public ResponseEntity<?> listar(Pageable pageable) {
 		Page<Curso> cursos = service.findAll(pageable).map(curso -> {
 			curso.getCursoAlumnos().forEach(ca -> {
-			// por cada uno se crea un objeto alumno, llenamos la colección de alumnos del
-			Alumno alumno = new Alumno();
-			alumno.setId(ca.getAlumnoId());
-			// lo guardamos a la lista de alumnos del curso
-			curso.addAlumno(alumno);
-		});
-		return curso;
+				// por cada uno se crea un objeto alumno, llenamos la colección de alumnos del
+				Alumno alumno = new Alumno();
+				alumno.setId(ca.getAlumnoId());
+				// lo guardamos a la lista de alumnos del curso
+				curso.addAlumno(alumno);
+			});
+			return curso;
 		});
 		// pasamos al cuerpo de la respuesta una lista de Entity
 		return ResponseEntity.ok().body(cursos);
@@ -181,18 +181,20 @@ public class CursoController extends CommonController<Curso, CursoService> {
 			// retorna un Iterable por lo que se le castea a List
 			List<Long> examenesIds = (List<Long>) service.obtenerExamenesIdsConRespuestasAlumno(id);
 
-			// nueva lista de examenes respondidos con map
-			List<Examen> examenes = curso.getExamenes().stream().map(examen -> {
-				if (examenesIds.contains(examen.getId())) {
-					// si está contenido lo pasamos a true
-					examen.setRespondido(true);
-				}
-				// retorna un string
-				return examen;
-				// se le pasa a a tipo List
-			}).collect(Collectors.toList());
-			// le enviamos la nueva lista, los examenes respondidos
-			curso.setExamenes(examenes);
+			if (examenesIds != null && examenesIds.size() > 0) {
+				// nueva lista de examenes respondidos con map
+				List<Examen> examenes = curso.getExamenes().stream().map(examen -> {
+					if (examenesIds.contains(examen.getId())) {
+						// si está contenido lo pasamos a true
+						examen.setRespondido(true);
+					}
+					// retorna un string
+					return examen;
+					// se le pasa a a tipo List
+				}).collect(Collectors.toList());
+				// le enviamos la nueva lista, los examenes respondidos
+				curso.setExamenes(examenes);
+			}
 		}
 		return ResponseEntity.ok(curso);
 	}
