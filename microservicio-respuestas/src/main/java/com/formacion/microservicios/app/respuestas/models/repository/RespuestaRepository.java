@@ -20,6 +20,12 @@ public interface RespuestaRepository extends MongoRepository<Respuesta, String> 
 	@Query("{'alumnoId': ?0}")
 	public Iterable<Respuesta> findByAlumnoId(Long alumnoId); // luego se convierte en un iterable Long que solo tiene los ids
 
+	@Query("{'alumnoId': ?0, 'pregunta.examen.id': ?1}") // pregunta es un atributo de respuesta
+	public Iterable<Respuesta> findRespuestaByAlumnoByExamen(Long alumnoId, Long examenId);
+
+	@Query(value = "{'alumnoId': ?0}", fields = "{'pregunta.examen.id': 1}") // en fields se añade lo que va a retornar el json
+	public Iterable<Respuesta> findExamenesIdsConRespuestasByAlumno(Long alumnoId);
+
 	// Mysql jpa
 	// el join no es a campos de la tabla como en sql sino a atributos
 	// el join fetch trae todos los datos relacionados con las tres tablas (alumno,
@@ -28,7 +34,6 @@ public interface RespuestaRepository extends MongoRepository<Respuesta, String> 
 	// @Query("select r from Respuesta r join fetch r.alumno a join fetch r.pregunta
 	// p join fetch p.examen e where a.id=?1 and e.id=?2")
 	// @Query("select r from Respuesta r join fetch r.pregunta p join fetch p.examen e where r.alumnoId=?1 and e.id=?2")
-
 	// public Iterable<Respuesta> findRespuestaByAlumnoByExamen(Long alumnoId, Long examenId);
 
 	// retorna todos los examenes respondidos por el a.id
