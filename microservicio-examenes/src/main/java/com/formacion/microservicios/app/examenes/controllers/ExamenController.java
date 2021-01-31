@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.formacion.microservicios.app.examenes.services.ExamenService;
@@ -20,6 +21,12 @@ import com.formacion.microservicios.commons.examenes.models.entity.Examen;
 @RestController
 public class ExamenController extends CommonController<Examen, ExamenService> {
 
+	@GetMapping("/respondidos-por-preguntas")
+	public ResponseEntity<?> obtenerExmanesIdsPorPreguntasRespondidas(@RequestParam Iterable<Long> preguntaIds){
+		
+		return ResponseEntity.ok().body(service.findExamenesIdsConRespuestasByPreguntaIds(preguntaIds));	
+	}
+	
 	// modificar, añadir preguntas al examen
 	@PutMapping("/{id}")
 	// Validación. Através del result se obtienen los mensajes de error de la validación, debe de ir después de examen
