@@ -1,5 +1,6 @@
 package com.formacion.microservicios.app.respuestas.services;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,8 +37,7 @@ public class RespuestaServiceImplement implements RespuestaService {
 		// convertir a un iterable con los ids de las preguntas
 		List<Long> preguntaIds = preguntas.stream().map(p -> p.getId()).collect(Collectors.toList());
 		// respuestas
-		List<Respuesta> respuestas = (List<Respuesta>) repository.findRespuestaByAlumnoByPreguntaIds(alumnoId,
-				preguntaIds);
+		List<Respuesta> respuestas = (List<Respuesta>) repository.findRespuestaByAlumnoByPreguntaIds(alumnoId, preguntaIds);
 		// asignar cada pregunta a cada respuesta
 		respuestas = respuestas.stream().map(r -> {
 			preguntas.forEach(p -> {
@@ -55,7 +55,16 @@ public class RespuestaServiceImplement implements RespuestaService {
 
 	@Override
 	public Iterable<Long> findExamenesIdsConRespuestasByAlumno(Long alumnoId) {
-		return null;
+		List<Respuesta> respuestasAlumno = (List<Respuesta>) repository.findByAlumnoId(alumnoId);
+		// crea una lista vacia 
+		List<Long> examenIds = Collections.emptyList();
+		// convertir a ids de preguntas
+		if (respuestasAlumno.size() > 0) {
+			List<Long> preguntaIds = respuestasAlumno.stream().map(r -> r.getPreguntaId()).collect(Collectors.toList());
+			// la recogemos del microservicio exmanes
+			examenIds = examenClient.obtenerExmanesIdsPorPreguntasRespondidas(preguntaIds);
+		}
+		return examenIds;
 	}
 
 	@Override
