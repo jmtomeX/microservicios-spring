@@ -41,7 +41,7 @@ public class Examen {
 	private Long id;
 
 	@NotEmpty // valida Strings
-	@Size(min = 4,max = 30) // validar tamaño de la cadena
+	@Size(min = 4, max = 30) // validar tamaño de la cadena
 	private String nombre;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -61,12 +61,11 @@ public class Examen {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@NotNull // valida objetos para validar
 	private Asignatura asignatura;
-	
+
 	// no mapeado en la bbdd porque se le asignaría a todos los alumnos
 	@Transient
 	private boolean respondido;
-	
-	
+
 	// constructor
 	public Examen() {
 		this.preguntas = new ArrayList<>();
@@ -105,7 +104,6 @@ public class Examen {
 	public List<Pregunta> getPreguntas() {
 		return preguntas;
 	}
-	
 
 	public Asignatura getAsignatura() {
 		return asignatura;
@@ -147,26 +145,23 @@ public class Examen {
 
 	public void removePregunta(Pregunta pregunta) {
 		this.preguntas.remove(pregunta);
-		// quitar la referencia al examen dejándola huérfana por lo que orphanRemoval la
-		// eliminará
+		// quitar la referencia al examen dejándola huérfana por lo que orphanRemoval la eliminará
 		pregunta.setExamen(null);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if(this == obj) {
+		if (this == obj) {
 			return true;
 		}
 		// comprobar que sean una instancia del mismo tipo examen
-		if(!(obj instanceof Examen)) {
+		if (!(obj instanceof Examen)) {
 			return false;
 		}
-		//comparar los ids casteando a examen
+		// comparar los ids casteando a examen
 		Examen a = (Examen) obj;
 		return this.id != null && this.id.equals(a.getId());
-		
+
 	}
-	
-	
 
 }
