@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':  # configuración en todos los microservicios
+            allowedOrigins: 
+              - 'http://localhost:4200' # '*' serian todos permitidos, recibe un array
+            allowedHeaders:              - Content-Type # todas las cabeceras serían: '*'
+            allowedMethods:              - GET
+              - POST
+              - PUT
+              - DELETE

@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CrossOrigin;
+//import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.formacion.microservicios.commons.services.CommonService;
 
 // para las cabeceras CORS del cliente en este caso las peticiones locales de Angular ("*") <- sería todas
-@CrossOrigin("http://localhost:4200")
+// @CrossOrigin("http://localhost:4200") se usa el archivo .yml en /resources/gateaway/application.yml
 public class CommonController<E, S extends CommonService<E>> {
 	// inyectar el repositorio
 	@Autowired
