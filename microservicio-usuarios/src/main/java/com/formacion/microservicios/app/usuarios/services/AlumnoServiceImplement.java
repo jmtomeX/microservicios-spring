@@ -3,6 +3,8 @@ package com.formacion.microservicios.app.usuarios.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +47,18 @@ public class AlumnoServiceImplement extends CommonServiceImplement<Alumno, Alumn
 		// eliminamos mediante API Rest utilizando feign de mysql de la tabla curso-alumnos
 		// si hay algún error de comunicación con el servicio externo no se eliminaría de postgre.
 		this.eliminarAlumnoCursoPorId(id);
+	}
+
+	@Override
+	@Transactional(readOnly= true)
+	public Iterable<Alumno> findAll() {
+		return repository.findAllByOrderByIdAsc();
+	}
+
+	@Override
+	@Transactional(readOnly= true)
+	public Page<Alumno> findAll(Pageable pageable) {
+		return repository.findAllByOrderByIdAsc(pageable) ;
 	}
 	
 

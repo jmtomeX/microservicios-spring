@@ -2,6 +2,8 @@ package com.formacion.microservicios.app.usuarios.models.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -16,4 +18,10 @@ public interface AlumnoRepository extends PagingAndSortingRepository<Alumno, Lon
 	@Query("select a from Alumno a where upper(a.nombre) like upper(concat('%',?1, '%')) or upper(a.apellido) like upper(concat('%',?1, '%'))")
 	// constultar https://docs.spring.io/spring-data/jpa/docs/2.4.2/reference/html/#jpa.query-methods
 	public List<Alumno> findByNombreOrApellido(String term);
+	
+	// ordenado por Id
+	public Iterable<Alumno> findAllByOrderByIdAsc(); // findAllByOrderByIdAsc son las palabras clave de JPA
+	
+	// ordenado por Id paginado
+	public Page<Alumno> findAllByOrderByIdAsc(Pageable pageable);
 }
