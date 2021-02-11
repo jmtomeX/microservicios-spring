@@ -117,7 +117,7 @@ public class CursoController extends CommonController<Curso, CursoService> {
 		return ResponseEntity.ok(response);
 	}
 
-	@PutMapping("/{id")
+	@PutMapping("/{id}")
 	public ResponseEntity<?> editar(@Valid @RequestBody Curso curso, BindingResult result, @PathVariable Long id) {
 		if (result.hasErrors()) {
 			return this.validar(result);
