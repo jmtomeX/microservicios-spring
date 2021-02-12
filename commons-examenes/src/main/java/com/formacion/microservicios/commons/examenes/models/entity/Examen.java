@@ -48,19 +48,26 @@ public class Examen {
 	@Column(name = "create_at")
 	private Date createAt;
 
+
 	// para evitar la relación inversa y evitar un bucle infinito en la
 	// petición(suprimir atributo examen)
 	// permitir setters para poder asignar la relación inversa
-	@JsonIgnoreProperties(value = { "examen" }, allowSetters = true)
+	@JsonIgnoreProperties(value = { "examen" , "handler", "hibernateLazyInitializer"}, allowSetters = true)
 	// establecer la relación con examenes bidireccional, en cascascada, borra las
 	// preguntas huerfanas
 	@OneToMany(mappedBy = "examen", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Pregunta> preguntas;
 
 	// relación con asignaturas
+	@JsonIgnoreProperties(value= {"handler", "hibernateLazyInitializer"}) // lo mismo en la relación en Asignatura
 	@ManyToOne(fetch = FetchType.LAZY)
 	@NotNull // valida objetos para validar
-	private Asignatura asignatura;
+	private Asignatura asignaturaPadre;
+	
+	@JsonIgnoreProperties(value= {"handler", "hibernateLazyInitializer"})
+	@ManyToOne(fetch = FetchType.LAZY)
+	@NotNull // valida objetos para validar
+	private Asignatura asignaturaHija;
 
 	// no mapeado en la bbdd porque se le asignaría a todos los alumnos
 	@Transient
@@ -104,13 +111,22 @@ public class Examen {
 	public List<Pregunta> getPreguntas() {
 		return preguntas;
 	}
+	
 
-	public Asignatura getAsignatura() {
-		return asignatura;
+	public Asignatura getAsignaturaPadre() {
+		return asignaturaPadre;
 	}
 
-	public void setAsignatura(Asignatura asignatura) {
-		this.asignatura = asignatura;
+	public void setAsignaturaPadre(Asignatura asignaturaPadre) {
+		this.asignaturaPadre = asignaturaPadre;
+	}
+
+	public Asignatura getAsignaturaHija() {
+		return asignaturaHija;
+	}
+
+	public void setAsignaturaHija(Asignatura asignaturaHija) {
+		this.asignaturaHija = asignaturaHija;
 	}
 
 	public boolean isRespondido() {
