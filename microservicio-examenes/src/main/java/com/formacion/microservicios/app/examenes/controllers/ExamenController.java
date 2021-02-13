@@ -46,6 +46,9 @@ public class ExamenController extends CommonController<Examen, ExamenService> {
 		Examen examenDb = o.get();
 		// modificamos el nombre
 		examenDb.setNombre(examen.getNombre());
+		// se le asignan las asignaturas seleccionadas al examen
+		examenDb.setAsignaturaHija(examen.getAsignaturaHija());
+		examenDb.setAsignaturaPadre(examen.getAsignaturaPadre());
 
 		/*
 		 * reflejar el cambio del json que se envia y la bbdd, se recibe un json el cual
