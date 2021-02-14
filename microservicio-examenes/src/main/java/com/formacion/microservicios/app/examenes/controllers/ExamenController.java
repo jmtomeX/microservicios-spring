@@ -2,6 +2,8 @@ package com.formacion.microservicios.app.examenes.controllers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -18,16 +20,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.formacion.microservicios.app.examenes.services.ExamenService;
 import com.formacion.microservicios.commons.controllers.CommonController;
 import com.formacion.microservicios.commons.examenes.models.entity.Examen;
+import com.formacion.microservicios.commons.examenes.models.entity.Pregunta;
 
 @RestController
 public class ExamenController extends CommonController<Examen, ExamenService> {
 
 	@GetMapping("/respondidos-por-preguntas")
-	public ResponseEntity<?> obtenerExmanesIdsPorPreguntasRespondidas(@RequestParam List<Long> preguntaIds){
-		
-		return ResponseEntity.ok().body(service.findExamenesIdsConRespuestasByPreguntaIds(preguntaIds));	
+	public ResponseEntity<?> obtenerExmanesIdsPorPreguntasRespondidas(@RequestParam List<Long> preguntaIds) {
+
+		return ResponseEntity.ok().body(service.findExamenesIdsConRespuestasByPreguntaIds(preguntaIds));
 	}
-	
+
 	// modificar, añadir preguntas al examen
 	@PutMapping("/{id}")
 	// Validación. Através del result se obtienen los mensajes de error de la validación, debe de ir después de examen
@@ -51,29 +54,29 @@ public class ExamenController extends CommonController<Examen, ExamenService> {
 		examenDb.setAsignaturaPadre(examen.getAsignaturaPadre());
 
 		/*
-		 * reflejar el cambio del json que se envia y la bbdd, se recibe un json el cual
-		 * se puede modificar porque se han borrado preguntas o añadido por lo que no
-		 * sera el mismo
+		 * reflejar el cambio del json que se envia y la bbdd, se recibe un json el cual se puede modificar porque se han
+		 * borrado preguntas o añadido por lo que no sera el mismo
 		 */
 
 		// preguntas eliminadas
 		/*
 		 * List<Pregunta> eliminidas = new ArrayList<>();
 		 * 
-		 * examenDb.getPreguntas().forEach(pdb -> { // si una pregunta no existe en el
-		 * examen se le añade para eliminarla // con constains importante tener
-		 * sobreescrito el equals ya que lo utiliza if
+		 * examenDb.getPreguntas().forEach(pdb -> { // si una pregunta no existe en el examen se le añade para eliminarla // con
+		 * constains importante tener sobreescrito el equals ya que lo utiliza if
 		 * 
-		 * (!examen.getPreguntas().contains(pdb)) { eliminidas.add(pdb); } });
-		 * eliminidas.forEach(p -> { examenDb.removePregunta(p); });
+		 * (!examen.getPreguntas().contains(pdb)) { eliminidas.add(pdb); } }); eliminidas.forEach(p -> {
+		 * examenDb.removePregunta(p); });
 		 */
 
 		// Código de arriba obtimizado con stream de java8
-		examenDb.getPreguntas().stream()
+		// modificado para eliminar preguntas vacias, se separa para poder elimininarlas en el siguiente foreach
+		List<Pregunta> eliminadas = examenDb.getPreguntas().stream()
 				// examen se le añade para eliminarla // con constains importante tener
-				.filter(pdb -> !examen.getPreguntas().contains(pdb))
-				// recibe pdb y se le pasa como argumento a remove
-				.forEach(examenDb::removePregunta);
+				.filter(pdb -> !examen.getPreguntas().contains(pdb)).collect(Collectors.toList());
+
+		// recibe pdb y se le pasa como argumento a remove
+		eliminadas.forEach(examenDb::removePregunta);
 
 		examenDb.setPreguntas(examen.getPreguntas());
 
