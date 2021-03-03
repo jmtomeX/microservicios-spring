@@ -2,7 +2,6 @@ package com.formacion.microservicios.app.examenes.controllers;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
